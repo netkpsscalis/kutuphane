@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <!-- flutter build web --base-href /kutuphane/ ile doldurulur (GitHub Pages alt klasörü). -->
+  <base href="/kutuphane/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Kur'an, tefsir, Risale-i Nur ve hadis; birbirine bağlı kişisel kütüphane.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <!--
+    Güvenlik duvarı (CSP): uygulama hiçbir dış sunucuya bağlanmıyor; çizim
+    motoru da --no-web-resources-cdn ile uygulamanın içinde. sqlite3.wasm
+    için 'wasm-unsafe-eval' gerekiyor.
+  -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval';
+    style-src 'self' 'unsafe-inline';
+    img-src 'self' data: blob:;
+    font-src 'self' data:;
+    connect-src 'self' blob:;
+    worker-src 'self' blob:;
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self';
+  ">
+
+  <!-- iPhone: ana ekrana eklenince tam ekran uygulama gibi açılır. -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Kütüphane">
+  <meta name="theme-color" content="#F7F3EA">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+
+  <link rel="icon" type="image/png" href="favicon.png"/>
+  <title>Kütüphane</title>
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    html, body { margin: 0; height: 100%; background: #F7F3EA; }
+    #yukleniyor {
+      position: fixed; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 14px;
+      font-family: -apple-system, system-ui, sans-serif; color: #6E665B;
+    }
+    #yukleniyor b { font-size: 26px; color: #2A2621; font-weight: 600; font-family: Georgia, serif; }
+  </style>
+</head>
+<body>
+  <div id="yukleniyor"><b>Kütüphane</b><span>Açılıyor…</span></div>
+  <script>
+    // Flutter ilk kareyi çizince yükleniyor yazısını kaldır.
+    window.addEventListener('flutter-first-frame', function () {
+      var y = document.getElementById('yukleniyor');
+      if (y) y.remove();
+    });
+    // İnternetsiz açılış için uygulama kabuğunu saklayan servis çalışanı.
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js'); });
+    }
+  </script>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
